@@ -1,0 +1,111 @@
+Take as input N, the size of a chess board. We are asked to place N number of queens in it, so that no queen can kill other.
+
+a. Write a recursive function which returns the count of different distinct ways the queens can be placed across the board. Print the value returned.
+
+b. Write a recursive function which prints all valid configurations (void is the return type for function).
+
+Input Format
+Enter the number N(Size of the chessboard)
+
+Constraints
+None
+
+Output Format
+Display the number of possible ways of arranging N queens and print all the possible arrangements in a space separated manner
+
+Sample Input
+4
+Sample Output
+{1-2} {2-4} {3-1} {4-3}  {1-3} {2-1} {3-4} {4-2}
+2
+
+------------------------------------------------------------------
+Code:
+#include <iostream>
+using namespace std;
+
+
+void printBoard(int board[100][100],int n){
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if(board[i][j]==1){
+                cout<<"{"<<i+1<<"-"<<j+1<<"}"<<" ";
+            }
+        }
+    }
+}
+
+
+bool isSafe(int board[100][100],int n,int row,int col){
+    for(int i=0;i<n;i++){
+        if(board[i][col]==1){
+            return false;
+        }
+        
+    }
+    for(int i=row-1,j=col-1;i>=0 && j>=0 ; i--,j--){
+        if(board[i][j]==1){
+            return false;
+        }
+    }
+     for(int i=row-1,j=col+1;i>=0 && j<n ; i--,j++){
+        if(board[i][j]==1){
+            return false;
+        }
+    }
+    return true;
+}
+bool nqueen(int board[100][100],int n,int row,int &count){
+     //base case
+     if(row==n){
+         printBoard(board,n);
+         count++;
+        //  return true;// it will print one solu
+        return false;//it will print many solutins 
+     }
+    //recursive case
+    for(int col=0;col<n;col++){
+      if(isSafe(board,n,row,col)){
+          board[row][col]=1;
+          if(nqueen(board,n,row+1,count)){
+              return true;
+          }
+          board[row][col]=0;//backtrack
+      }  
+    }
+    return false;
+ }
+int main(){
+    int board[100][100]={0};
+    int n,count =0;
+    cin>>n;
+    nqueen(board,n,0,count);
+    cout<<endl<<count;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
